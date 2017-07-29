@@ -33,6 +33,7 @@
             this.OvaleTab = new System.Windows.Forms.TabPage();
             this.OvaleScriptsLogTextbox = new System.Windows.Forms.TextBox();
             this.OvaleLogTextbox = new System.Windows.Forms.TextBox();
+            this.CombiButton = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.OvaleScriptsTab.SuspendLayout();
             this.OvaleTab.SuspendLayout();
@@ -99,14 +100,31 @@
             this.OvaleLogTextbox.Size = new System.Drawing.Size(565, 423);
             this.OvaleLogTextbox.TabIndex = 1;
             // 
+            // CombiButton
+            // 
+            this.CombiButton.BackColor = System.Drawing.SystemColors.Control;
+            this.CombiButton.Enabled = false;
+            this.CombiButton.FlatAppearance.BorderColor = System.Drawing.Color.Green;
+            this.CombiButton.Font = new System.Drawing.Font("Arial Rounded MT Bold", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.CombiButton.Location = new System.Drawing.Point(0, 451);
+            this.CombiButton.Margin = new System.Windows.Forms.Padding(0);
+            this.CombiButton.Name = "CombiButton";
+            this.CombiButton.Size = new System.Drawing.Size(138, 67);
+            this.CombiButton.TabIndex = 1;
+            this.CombiButton.Text = "Initializing";
+            this.CombiButton.UseVisualStyleBackColor = false;
+            this.CombiButton.Click += new System.EventHandler(this.CombiButton_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(571, 518);
+            this.Controls.Add(this.CombiButton);
             this.Controls.Add(this.tabControl1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
-            this.MinimumSize = new System.Drawing.Size(250, 150);
+            this.MaximizeBox = false;
+            this.MaximumSize = new System.Drawing.Size(587, 557);
+            this.MinimumSize = new System.Drawing.Size(587, 557);
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Ovale updater";
@@ -127,6 +145,7 @@
         private System.Windows.Forms.TextBox OvaleScriptsLogTextbox;
         private System.Windows.Forms.TabPage OvaleTab;
         private System.Windows.Forms.TextBox OvaleLogTextbox;
+        private System.Windows.Forms.Button CombiButton;
     }
 }
 

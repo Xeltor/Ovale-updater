@@ -1,4 +1,6 @@
 ﻿using LibGit2Sharp;
+using LibGit2Sharp.Handlers;
+using Ovale_updater.Enums;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -10,16 +12,54 @@ namespace Ovale_updater.Github
 {
     public class Git
     {
-        internal Task<string> Update(string v)
-        {
-            throw new NotImplementedException();
-        }
-
-        internal Task<bool> Clone(string GithubUsername, string GithubRepo)
+        internal Task<bool> Update(Repo GithubRepo)
         {
             try
             {
-                Repository.Clone($"https://github.com/{GithubUsername}/{GithubRepo}.git", $"D:\\Workspace\\Fakewow\\interface\\addons\\{GithubRepo}");
+                string logMessage = "";
+                using (var repo = new Repository($"{Properties.Settings.Default.WoWLocation}\\interface\\addons\\{GithubRepo}"))
+                {
+                    foreach (Remote remote in repo.Network.Remotes)
+                    {
+                        IEnumerable<string> refSpecs = remote.FetchRefSpecs.Select(x => x.Specification);
+                        Commands.Fetch(repo, remote.Name, refSpecs, null, logMessage);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return Task.FromResult(false);
+            }
+
+            return Task.FromResult(true);
+        }
+
+        internal Task<string> CurrentVersion(Repo GithubRepo)
+        {
+            using (var repo = new Repository($"{Properties.Settings.Default.WoWLocation}\\interface\\addons\\{GithubRepo}"))
+            {
+                string version = repo.Commits.First().Id.ToString();
+
+                return Task.FromResult(version);
+            }
+        }
+
+        internal Task<string> BrancheVersion(Repo GithubRepo)
+        {
+            using (var repo = new Repository($"{Properties.Settings.Default.WoWLocation}\\interface\\addons\\{GithubRepo}"))
+            {
+                string version = repo.Branches.First().Commits.First().Id.ToString();
+
+                return Task.FromResult(version);
+            }
+        }
+
+        internal Task<bool> Clone(Repo GithubRepo)
+        {
+            try
+            {
+                Repository.Clone($"https://github.com/Xeltor/{GithubRepo}.git", $"{Properties.Settings.Default.WoWLocation}\\interface\\addons\\{GithubRepo}");
             }
             catch
             {
@@ -29,11 +69,11 @@ namespace Ovale_updater.Github
             return Task.FromResult(true);
         }
 
-        internal Task<string> Log(string GithubUsername, string GithubRepo)
+        internal Task<string> Log(Repo GithubRepo)
         {
             string log = "";
 
-            using (var repo = new Repository($"D:\\Workspace\\Fakewow\\interface\\addons\\{GithubRepo}"))
+            using (var repo = new Repository($"{Properties.Settings.Default.WoWLocation}\\interface\\addons\\{GithubRepo}"))
             {
                 var RFC2822Format = "ddd dd MMM HH:mm:ss yyyy K";
 
@@ -49,8 +89,8 @@ namespace Ovale_updater.Github
                     log += string.Format("Author: {0} <{1}>", c.Author.Name, c.Author.Email) + Environment.NewLine;
                     log += string.Format("Date:   {0}", c.Author.When.ToString(RFC2822Format, CultureInfo.InvariantCulture)) + Environment.NewLine;
                     log += Environment.NewLine;
-                    log += c.Message.Replace("\n", Environment.NewLine);
-                    log += Environment.NewLine;
+                    log += c.Message.TrimEnd().Replace("\n", Environment.NewLine) + Environment.NewLine;
+                    log += "_________________________________________________________________" + Environment.NewLine + Environment.NewLine;
                 }
             }
 
