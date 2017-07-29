@@ -28,7 +28,10 @@ namespace Ovale_updater
 
         private async void Run()
         {
-            if (string.IsNullOrEmpty(Properties.Settings.Default.WoWLocation) || !Directory.Exists($"{Properties.Settings.Default.WoWLocation}\\interface\\addons"))
+            if (string.IsNullOrEmpty(Properties.Settings.Default.WoWLocation) || 
+                !Directory.Exists($"{Properties.Settings.Default.WoWLocation}\\interface\\addons") ||
+                !Directory.Exists($"{Properties.Settings.Default.WoWLocation}\\interface\\addons\\{Repo.Xeltors_Ovale_Scripts}") ||
+                !Directory.Exists($"{Properties.Settings.Default.WoWLocation}\\interface\\addons\\{Repo.Ovale}"))
             {
                 EnableButton($"Install");
             }
@@ -42,8 +45,17 @@ namespace Ovale_updater
 
                 if (version != current)
                 {
-                    DisableButton($"Updating to {version}");
+                    DisableButton($"Updating Ovale Scripts");
                     await git.Update(Repo.Xeltors_Ovale_Scripts);
+                }
+
+                version = await git.BrancheVersion(Repo.Ovale);
+                current = await git.CurrentVersion(Repo.Ovale);
+
+                if (version != current)
+                {
+                    DisableButton($"Updating Ovale");
+                    await git.Update(Repo.Ovale);
                 }
 
                 OvaleScriptsLogTextbox.Text = await git.Log(Repo.Xeltors_Ovale_Scripts);
@@ -82,8 +94,12 @@ namespace Ovale_updater
                         MessageBox.Show("Could not locate the World of Warcraft addons folder.", "Addons not found!");
                         EnableButton($"Install");
                         return;
-                    case Error.OldVersionInstalled:
-                        MessageBox.Show("Ovale is already installed, please remove it first.", "Ovale present!");
+                    case Error.CouldNotRemoveOvale:
+                        MessageBox.Show("Could not remove Ovale from the addons folder, please remove it manually and try the install again.", "Ovale present!");
+                        EnableButton($"Install");
+                        return;
+                    case Error.CouldNotRemoveOvaleScripts:
+                        MessageBox.Show("Could not remove Xeltors_Ovale_Scripts from the addons folder, please remove it manually and try the install again.", "Xeltors Ovale Scripts present!");
                         EnableButton($"Install");
                         return;
                 }

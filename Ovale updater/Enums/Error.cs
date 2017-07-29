@@ -10,6 +10,7 @@ namespace Ovale_updater.Enums
     {
         None,
         AddonFolderNotFound,
-        OldVersionInstalled
+        CouldNotRemoveOvale,
+        CouldNotRemoveOvaleScripts
     }
 }

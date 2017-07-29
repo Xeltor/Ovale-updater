@@ -25,21 +25,32 @@ namespace Ovale_updater.Functions
 
             if (!Directory.Exists($"{location}\\interface\\addons"))
                 return Error.AddonFolderNotFound;
-            
+
+            var fs = new Filesystem();
+            if (Directory.Exists($"{location}\\interface\\addons\\{Repo.Ovale}"))
+            {
+                var result = fs.RemoveFolder($"{location}\\interface\\addons\\{Repo.Ovale}");
+
+                if (!result)
+                    return Error.CouldNotRemoveOvale;
+            }
+
+            if (Directory.Exists($"{location}\\interface\\addons\\{Repo.Xeltors_Ovale_Scripts}"))
+            {
+                var result = fs.RemoveFolder($"{location}\\interface\\addons\\{Repo.Xeltors_Ovale_Scripts}");
+
+                if (!result)
+                    return Error.CouldNotRemoveOvaleScripts;
+            }
+
             Properties.Settings.Default.WoWLocation = location;
             Properties.Settings.Default.Save();
-
-            if (Directory.Exists($"{Properties.Settings.Default.WoWLocation}\\interface\\addons\\{Repo.Ovale}"))
-                return Error.OldVersionInstalled;
-
-            if (Directory.Exists($"{Properties.Settings.Default.WoWLocation}\\interface\\addons\\{Repo.Xeltors_Ovale_Scripts}"))
-                return Error.OldVersionInstalled;
 
             var git = new Git();
 
             await git.Clone(Repo.Ovale);
             await git.Clone(Repo.Xeltors_Ovale_Scripts);
-            
+
             return Error.None;
         }
 

@@ -65,6 +65,7 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Functions\Filesystem.cs" />
     <Compile Include="Functions\Installer.cs" />
     <Compile Include="Github\Git.cs" />
     <Compile Include="Program.cs" />

@@ -83,11 +83,11 @@ namespace Ovale_updater.Github
 
                     if (c.Parents.Count() > 1)
                     {
-                        log += string.Format("Merge: {0}", string.Join(" ", c.Parents.Select(p => p.Id.Sha.Substring(0, 7)).ToArray())) + Environment.NewLine;
+                        log += string.Format("Merge:  {0}", string.Join(" ", c.Parents.Select(p => p.Id.Sha.Substring(0, 7)).ToArray())) + Environment.NewLine;
                     }
 
-                    log += string.Format("Author: {0} <{1}>", c.Author.Name, c.Author.Email) + Environment.NewLine;
-                    log += string.Format("Date:   {0}", c.Author.When.ToString(RFC2822Format, CultureInfo.InvariantCulture)) + Environment.NewLine;
+                    log += string.Format("Author:  {0} <{1}>", c.Author.Name, c.Author.Email) + Environment.NewLine;
+                    log += string.Format("Date:     {0}", c.Author.When.ToString(RFC2822Format, CultureInfo.InvariantCulture)) + Environment.NewLine;
                     log += Environment.NewLine;
                     log += c.Message.TrimEnd().Replace("\n", Environment.NewLine) + Environment.NewLine;
                     log += "_________________________________________________________________" + Environment.NewLine + Environment.NewLine;
