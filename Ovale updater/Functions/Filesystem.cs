@@ -19,9 +19,8 @@ namespace Ovale_updater.Functions
                 
                 folder.Delete(true);
             }
-            catch (Exception ex)
+            catch
             {
-                Console.WriteLine(ex);
                 return false;
             }
 
@@ -44,9 +43,8 @@ namespace Ovale_updater.Functions
                         return false;
                 }
             }
-            catch (Exception ex)
+            catch
             {
-                Console.WriteLine(ex);
                 return false;
             }
 

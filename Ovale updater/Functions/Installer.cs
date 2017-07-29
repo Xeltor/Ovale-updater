@@ -25,7 +25,12 @@ namespace Ovale_updater.Functions
 
             if (!Directory.Exists($"{location}\\interface\\addons"))
                 return Error.AddonFolderNotFound;
+            
+            return await InstallAddons(location);
+        }
 
+        private async Task<Error> InstallAddons(string location)
+        {
             var fs = new Filesystem();
             if (Directory.Exists($"{location}\\interface\\addons\\{Repo.Ovale}"))
             {
@@ -54,9 +59,30 @@ namespace Ovale_updater.Functions
             return Error.None;
         }
 
-        internal bool UpdateAddons()
+        internal async Task<string> Update(Repo repo)
         {
-            return true;
+            var git = new Git();
+
+            string version = await git.BrancheVersion(repo);
+            string current = await git.CurrentVersion(repo);
+
+            if (version != current)
+            {
+                await git.Update(repo);
+
+                // Check if update worked.
+                current = await git.CurrentVersion(repo);
+
+                if (version != current)
+                {
+                    // Attempt reinstall.
+                    await InstallAddons(Properties.Settings.Default.WoWLocation);
+                }
+
+                return $"{repo.ToString().Replace("Xeltors_", "").Replace("_", " ")}: Updated to {version}" + Environment.NewLine;
+            }
+            else
+                return $"{repo.ToString().Replace("Xeltors_", "").Replace("_", " ")}: No updates." + Environment.NewLine;
         }
     }
 }
