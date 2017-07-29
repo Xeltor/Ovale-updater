@@ -29,6 +29,12 @@ namespace Ovale_updater.Functions
             Properties.Settings.Default.WoWLocation = location;
             Properties.Settings.Default.Save();
 
+            if (Directory.Exists($"{Properties.Settings.Default.WoWLocation}\\interface\\addons\\{Repo.Ovale}"))
+                return Error.OldVersionInstalled;
+
+            if (Directory.Exists($"{Properties.Settings.Default.WoWLocation}\\interface\\addons\\{Repo.Xeltors_Ovale_Scripts}"))
+                return Error.OldVersionInstalled;
+
             var git = new Git();
 
             await git.Clone(Repo.Ovale);

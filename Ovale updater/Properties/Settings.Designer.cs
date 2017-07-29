@@ -25,7 +25,7 @@ namespace Ovale_updater.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("D:\\Workspace\\Fakewow")]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string WoWLocation {
             get {
                 return ((string)(this["WoWLocation"]));

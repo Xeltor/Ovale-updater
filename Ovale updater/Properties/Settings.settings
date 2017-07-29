@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="WoWLocation" Type="System.String" Scope="User">
-      <Value Profile="(Default)">D:\Workspace\Fakewow</Value>
+      <Value Profile="(Default)" />
     </Setting>
   </Settings>
 </SettingsFile>
