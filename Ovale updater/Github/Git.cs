@@ -19,6 +19,8 @@ namespace Ovale_updater.Github
                 string logMessage = "";
                 using (var repo = new Repository($"{Properties.Settings.Default.WoWLocation}\\interface\\addons\\{GithubRepo}"))
                 {
+                    repo.Reset(ResetMode.Hard);
+
                     foreach (Remote remote in repo.Network.Remotes)
                     {
                         IEnumerable<string> refSpecs = remote.FetchRefSpecs.Select(x => x.Specification);
@@ -26,9 +28,8 @@ namespace Ovale_updater.Github
                     }
                 }
             }
-            catch (Exception ex)
+            catch
             {
-                Console.WriteLine(ex);
                 return Task.FromResult(false);
             }
 

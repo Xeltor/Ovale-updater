@@ -39,24 +39,10 @@ namespace Ovale_updater
             else
             {
                 var git = new Git();
+                var installer = new Installer();
 
-                string version = await git.BrancheVersion(Repo.Xeltors_Ovale_Scripts);
-                string current = await git.CurrentVersion(Repo.Xeltors_Ovale_Scripts);
-
-                if (version != current)
-                {
-                    DisableButton($"Updating Ovale Scripts");
-                    await git.Update(Repo.Xeltors_Ovale_Scripts);
-                }
-
-                version = await git.BrancheVersion(Repo.Ovale);
-                current = await git.CurrentVersion(Repo.Ovale);
-
-                if (version != current)
-                {
-                    DisableButton($"Updating Ovale");
-                    await git.Update(Repo.Ovale);
-                }
+                await installer.Update(Repo.Ovale);
+                await installer.Update(Repo.Xeltors_Ovale_Scripts);
 
                 OvaleScriptsLogTextbox.Text = await git.Log(Repo.Xeltors_Ovale_Scripts);
                 OvaleLogTextbox.Text = await git.Log(Repo.Ovale);
